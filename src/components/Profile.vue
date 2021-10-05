@@ -116,7 +116,7 @@ export default {
       let loggedUserEmail = firebaseApp.auth().currentUser.email
       let thisState = this
 
-      firebaseApp.firestore().collection("collectors").where("email","==", loggedUserEmail)
+      firebaseApp.firestore().collection("users").where("email","==", loggedUserEmail)
         .onSnapshot(querySnapshot => {
           querySnapshot.forEach(function(doc){
             //Get user UID

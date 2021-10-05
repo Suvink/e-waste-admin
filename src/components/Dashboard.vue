@@ -71,9 +71,9 @@
           <div class="column is-1"></div>
           <div class="column is-10">
             <line-chart
-              :data="this.jobsWithDateString"
-              download="Jobs History"
+              :data={...this.jobsWithDateString}
               :colors="['#9c27b0', '#03a9f4']"
+              download="Jobs History"
             ></line-chart>
           </div>
           <div class="column is-1"></div>
@@ -146,6 +146,22 @@ export default {
   created() {
     let thisState = this;
     let loggedUserEmail = firebaseApp.auth().currentUser.email;
+
+    firebaseApp.firestore().collection("users").where("email","==", loggedUserEmail)
+        .onSnapshot(querySnapshot => {
+          querySnapshot.forEach(function(doc){
+            //Get user UID
+            thisState.uid = doc.id
+
+            thisState.userdata = doc.data()
+            //For defaults
+            thisState.userdataDefault = doc.data()
+          })
+        },
+        error => {
+          console.log(error)
+        }
+      )
   },
 
   mounted() {
@@ -235,9 +251,9 @@ export default {
 <style scoped>
 @import url("../assets/css/style.css");
 
-.dashbody {
+/* .dashbody {
   height: 200vh !important;
-}
+} */
 
 /* Pulse Grow */
 @-webkit-keyframes hvr-pulse-grow {
